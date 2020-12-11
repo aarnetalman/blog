@@ -4,11 +4,6 @@ title: About Me
 permalink: /about/
 ---
 
-I'm a researcher in Language Technology at [University of Helsinki](https://blogs.helsinki.fi/language-technology/). My research focuses on computational semantics, natural language understanding, machine translation and machine learning.
-
- I work as the CTO at [Nordcloud](https://www.nordcloud.com) UK. I have 15 years of experience in software development, architecture, management consulting, startup business, AI/ML and NLP development and academic research.
-
-
 ### Education
 
 *   **2018 - present**, PhD in Language Technology, [University of Helsinki](http://www.helsinki.fi/university "University of Helsinki")
