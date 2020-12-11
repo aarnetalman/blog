@@ -3,8 +3,6 @@ layout: page
 title: Publications and Talks
 permalink: /publications/
 ---
-# Publications and Talks
-
 ### Academic Publications
 
 1.  **Aarne Talman**, Antti Suni, Hande Celikkanat, Sofoklis Kakouros, Jörg Tiedemann and Martti Vainio. 2019\. [Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations](https://aclweb.org/anthology/W19-6129/ "Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations"). Proceedings of NoDaLiDa 2019\. [[bibtex](https://aclweb.org/anthology/W19-6129.bib)] [[pdf](https://www.aclweb.org/anthology/W19-6129.pdf)] [[corpus and code](https://github.com/Helsinki-NLP/prosody)]

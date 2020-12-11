@@ -3,8 +3,6 @@ layout: page
 title: Teaching
 permalink: /teaching/
 ---
-# Teaching
-
 ### University of Helsinki
 
 *   Instructor: Approaches to natural language understanding. 2019-2019, Period 4.

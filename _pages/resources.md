@@ -3,8 +3,6 @@ layout: page
 title: Resources
 permalink: /resources/
 ---
-# Resources
-
 ### Software
 
 1.  **[Prosody](https://github.com/Helsinki-NLP/prosody)**: A system for predicting prosodic prominence from written text.
