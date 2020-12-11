@@ -246,7 +246,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Once the data has been tokenised we will create a <code>NLIDataset</code> object for our data. Here we are creating a subclass that inherits the <code>torch.utils.data.Dataset</code> class.</p>
+<p>Once the data has been tokenised we will create an <code>NLIDataset</code> object for our data. Here we are creating a subclass that inherits the <code>torch.utils.data.Dataset</code> class.</p>
 
 </div>
 </div>
@@ -309,7 +309,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now, before we can start training, we need to import our model and optimiser to be used in training. We first set the device and use <code>cuda</code> if GPU is available. We then get the pre-trained DistilBERT model specifying the number of classes we are classifying to.</p>
+<p>Now, before we can start training, we need to initialise our model and optimiser to be used in training. We first set the device and use <code>cuda</code> if GPU is available. We then get the pre-trained DistilBERT model specifying the number of classes we are classifying to by setting <code>num_labels=3</code>.</p>
 
 </div>
 </div>
