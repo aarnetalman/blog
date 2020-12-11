@@ -3,6 +3,8 @@ layout: page
 title: About
 permalink: /about/
 ---
+# About
+
 ![](../images/aarne.png){:style="float: left;margin-right: 15px;margin-top: 5px; width: 120px"} I'm a researcher in Language Technology at [University of Helsinki](https://blogs.helsinki.fi/language-technology/). 
 My research focuses on computational semantics, natural language understanding, machine translation and machine learning.
 

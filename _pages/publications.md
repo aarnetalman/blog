@@ -3,6 +3,7 @@ layout: page
 title: Publications and Talks
 permalink: /publications/
 ---
+# Publications and Talks
 
 ### Academic Publications
 
