@@ -6,10 +6,10 @@
 
   
       "page1": {
-          "title": "About Me",
+          "title": "CV",
           "content": "Education . 2018 - present, PhD in Language Technology, University of Helsinki | 2005 - 2007, MSc in Computational Linguistics and Formal Grammar, King’s College London Graduated with Distinction. | 2002 - 2005, BSc in Philosophy, London School of Economics Graduated with First Class Honours. | . Employment . 2020 - present, CTO, Nordcloud UK | 2018 - 2020, Doctoral Researcher, Language Technology, University of Helsinki Working on computational semantics and natural language processing. | 2019 - present, Founder, Basement AI Basement AI is a Nordic artificial intelligence research lab specializing in natural language processing and machine learning. | 2015 - 2018, Associate Director, Consulting, Gartner. | 2012 - 2015, Consultant, Accenture. | 2011 - 2012, Research Student, London School of Economics. | 2009 - 2011, Product Manager, Nokia. | 2008 - 2009, Manager, Nokia. | 2006 - 2008, Systems Analyst, Tieto. | 2006 - 2006, Software Developer, Valuatum. | .",
-          "url": "https://talman.io/about/",
-          "relUrl": "/about/",
+          "url": "https://talman.io/cv/",
+          "relUrl": "/cv/",
           "date": ""
       }
       
