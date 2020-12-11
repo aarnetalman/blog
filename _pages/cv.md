@@ -1,7 +1,7 @@
 ---
 layout: page
-title: About Me
-permalink: /about/
+title: CV
+permalink: /cv/
 ---
 
 ### Education
