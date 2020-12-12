@@ -1,0 +1,6 @@
+@inproceedings{talman2019b,
+  title={Testing the Generalization Power of Neural Network Models Across NLI Benchmarks},
+  author={Aarne Talman and Stergios Chatzikyriakidis},
+  booktitle={Proceedings of the 2019 ACL Workshop BlackboxNLP: Analyzing and Interpreting Neural Networks for NLP},
+  year={2019}
+}

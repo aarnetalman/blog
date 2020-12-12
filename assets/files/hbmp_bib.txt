@@ -1,0 +1,9 @@
+@article{talman_yli-jyra_tiedemann_2019, 
+  title={Sentence embeddings in {NLI} with iterative refinement encoders}, 
+  author={Talman, Aarne and Yli-Jyr\"a, Anssi and Tiedemann, J\"org}, 
+  journal={Natural Language Engineering}, 
+  volume={25},
+  number={4}, 
+  publisher={Cambridge University Press}, 
+  year={2019}, 
+  pages={467–482}}

@@ -1,0 +1,6 @@
+@inproceedings{talman2019cw_mt19,
+  title={The University of Helsinki submissions to the WMT19 news translation task},
+  author={Aarne Talman and Umut Sulubacak and Ra\'ul V\'azquez and Yves Scherrer and Sami Virpioja and Alessandro Raganato and Arvi Hurskainen and J\"org Tiedemann},
+  booktitle={Proceedings of the Fourth Conference on Machine Translation: Shared Task Papers},
+  year={2019}
+}
