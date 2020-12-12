@@ -131,7 +131,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In my <a href="https://talman.io/nli/pytorch/demo/2020/12/11/natural-language-inference-with-pytorch-and-transformers.html">previous post</a> I showed how to fine-tune a pre-trained transformers model for the natural language inference (NLI) classification task. In this post I'm taking a fine-tuned NLI model and use it to classify and rank articles in a news feed.</p>
-<p>The idea is simple: we use an NLI model that has been trained on the MultiNLI task and pass an excerpt of the source text together with a search term we are interested in to the model. The model will then check if the source text entails the search term and returns a score. We can use these score to rank the articles. We could use the model we trained on the previous demo, but luckily the people at Huggingface have made our lives much easier by releasing a new <a href="https://huggingface.co/transformers/master/main_classes/pipelines.html#transformers.ZeroShotClassificationPipeline">pipeline for zero-shot classification</a> which uses a pre-trained NLI model.</p>
+<p>The idea is simple: we use an NLI model that has been trained on the MultiNLI task and pass an excerpt of the source text together with a search term we are interested in to the model. The model will then check if the source text entails the search term and returns a score. We can use these scores to rank the articles. We could use the model we trained on the previous demo, but luckily the people at Huggingface have made our lives much easier by releasing a new <a href="https://huggingface.co/transformers/master/main_classes/pipelines.html#transformers.ZeroShotClassificationPipeline">pipeline for zero-shot classification</a> which uses a pre-trained NLI model.</p>
 
 </div>
 </div>
@@ -207,7 +207,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Next we will define some functions we need for when we process html content retrieved from the websites. The <code>text_from_html</code> function uses <code>BeautifulSoup</code> to filter out unwanted content like html tags, comments, etc. We also define a function we will use to print out the results in markdown format.</p>
+<p>Next we will define some functions we need when we process html content retrieved from the websites. The <code>text_from_html</code> function uses <code>BeautifulSoup</code> to filter out unwanted content like html tags, comments, etc. We also define a function we will use to print out the results in markdown format.</p>
 
 </div>
 </div>
@@ -275,7 +275,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now that we have defined our classifier function we have to define the news feed we want to retrieve the articles from. For this demo I want to understand what news releases have come out from Amazon Web Services (AWS) about machine learning in the last 7 days. So I'm using AWS blog as the source <em>"machine learning"</em> as the search term / classification label. Lastly, we also define the number of articles we are displaying at the end.  Let's say we want to see the top 4 articles about machine learning.</p>
+<p>Now that we have defined our classifier function we have to define the news feed we want to retrieve the articles from. For this demo I want to understand what news releases have come out from Amazon Web Services (AWS) about machine learning in the past 7 days. So I'm using AWS blog as the source and <em>"machine learning"</em> as the search term / classification label. Lastly, we also define the number of articles we want to display.  Let's say we want to see the top 4 articles about machine learning.</p>
 
 </div>
 </div>
@@ -302,7 +302,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Next we retrieve the newsfeed using the <code>feedparser</code> library. We then retrieve the html source for all the articles from the feed that have been published in the last 7 days. We use the <code>text_from_html</code> function to extract the text from the html source and call the classifier function. Finally, we save the classification score and other relevant information for each article.</p>
+<p>Next, we retrieve the newsfeed using the <code>feedparser</code> library. We then retrieve the html source for all the articles from the feed that have been published in the last 7 days. We use the <code>text_from_html</code> function to extract the text from the html source and call the classifier function. Finally, we save the classification score and other relevant information for each article.</p>
 
 </div>
 </div>
@@ -343,7 +343,7 @@ window.onload = wrap_img;
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 19/19 [07:54&lt;00:00, 25.00s/it]
+<pre>100%|██████████| 19/19 [07:39&lt;00:00, 24.16s/it]
 </pre>
 </div>
 </div>
@@ -421,13 +421,15 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">article</span> <span class="ow">in</span> <span class="n">sorted_articles</span><span class="p">[:</span><span class="n">number_of_articles</span><span class="p">]:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">20</span> <span class="o">+</span> <span class="s1">&#39; Start of output &#39;</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">article</span> <span class="ow">in</span> <span class="n">sorted_articles</span><span class="p">[:</span><span class="n">number_of_articles</span><span class="p">]:</span>
     <span class="n">summary</span> <span class="o">=</span> <span class="n">summarise</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;src_text&quot;</span><span class="p">])</span>
     <span class="n">printmd</span><span class="p">(</span><span class="s2">&quot;**</span><span class="si">{}</span><span class="s2">**&lt;br&gt;</span><span class="si">{}</span><span class="s2">&lt;br&gt;</span><span class="si">{}</span><span class="s2">&lt;br&gt;**Search term:** </span><span class="si">{}</span><span class="s2"> | **Score:** </span><span class="si">{:6.3f}</span><span class="s2">&lt;br&gt;&lt;br&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>
                                                                                             <span class="n">article</span><span class="p">[</span><span class="s2">&quot;link&quot;</span><span class="p">],</span>
                                                                                             <span class="n">summary</span><span class="p">,</span> 
                                                                                             <span class="n">search_term</span><span class="p">,</span> 
                                                                                             <span class="mi">100</span><span class="o">*</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;relevancy&quot;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">20</span> <span class="o">+</span> <span class="s1">&#39; End of output &#39;</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -436,6 +438,14 @@ window.onload = wrap_img;
 
 <div class="output_wrapper">
 <div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>******************** Start of output ********************
+</pre>
+</div>
+</div>
 
 <div class="output_area">
 
@@ -475,6 +485,14 @@ window.onload = wrap_img;
 
 </div>
 
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>******************** End of output ********************
+</pre>
+</div>
 </div>
 
 </div>
