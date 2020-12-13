@@ -253,7 +253,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Next we need to define our classifier function that will take the source text and the search term and provide the result. The model we are using has a 1024 limit for the input text. Note that this will significantly impact the results as we might be cutting out some important information. However, for our demonstration purposes we will not care about this. You could of course split the text into smaller junks and perform classification of those junks separately and then combine the results at the end.</p>
+<p>We need to define our classifier function that will take the source text and the search term and provide the result. The model we are using has a 1024 limit for the input text. Note that this will significantly impact the results as we might be cutting out some important information. However, for our demonstration purposes we will not care about this. You could of course split the text into smaller junks and perform classification of those junks separately and then combine the results at the end.</p>
 
 </div>
 </div>
@@ -281,7 +281,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now that we have defined our classifier function we have to define the news feed we want to retrieve the articles from. For this demo I want to understand what news releases have come out from Amazon Web Services (AWS) about machine learning in the past 7 days. So I'm using AWS blog as the source and <em>"machine learning"</em> as the search term / classification label. Lastly, we also define the number of articles we want to display.  Let's say we want to see the top 4 articles about machine learning.</p>
+<p>Now that we have defined our classifier function we have to define the news feed we want to retrieve the articles from. For this demo I want to understand what news releases have come out from Amazon Web Services (AWS) about machine learning in the past 7 days. So I'm using AWS blog as the source and <em>"machine learning"</em> as the search term / classification label. We also define the number of articles we want to display.  Let's say we want to see the top 4 articles about machine learning.</p>
 
 </div>
 </div>
@@ -386,7 +386,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now, before we display the results, I'm defining another useful function that utilises the transformers <a href="https://huggingface.co/transformers/master/main_classes/pipelines.html#transformers.SummarizationPipeline">summarization pipeline</a>. We will use this function to create a short summary of each article on our list.</p>
+<p>Before we display the results, I'm defining another useful function that utilises the transformers <a href="https://huggingface.co/transformers/master/main_classes/pipelines.html#transformers.SummarizationPipeline">summarization pipeline</a>. We will use this function to create a short summary of each article on our list.</p>
 
 </div>
 </div>
