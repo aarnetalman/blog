@@ -327,7 +327,7 @@ window.onload = wrap_img;
     <span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>             
     <span class="n">src_text</span> <span class="o">=</span> <span class="n">text_from_html</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>           
 
-    <span class="c1"># This is where we call out classifier function using the source text and the seach term</span>
+    <span class="c1"># This is where we call out classifier function using the source text and the search term</span>
     <span class="n">classification</span> <span class="o">=</span> <span class="n">classifier</span><span class="p">(</span><span class="n">src_text</span><span class="p">,</span> <span class="n">search_term</span><span class="p">)</span>
     
     <span class="n">article</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
