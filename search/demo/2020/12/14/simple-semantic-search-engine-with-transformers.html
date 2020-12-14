@@ -133,7 +133,13 @@ window.onload = wrap_img;
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In the previous two posts I've explored how to use <a href="https://github.com/huggingface/transformers">Huggingface Transformers</a> to <a href="https://talman.io/nli/pytorch/demo/2020/12/11/natural-language-inference-with-pytorch-and-transformers.html">train a classification model for NLI</a> and then how to use an NLI model to <a href="https://talman.io/nli/pytorch/demo/2020/12/12/article-ranking-with-an-nli-model.html">rank news articles</a> based on a keyword.</p>
+<p>In the previous two posts I've explored the <a href="https://github.com/huggingface/transformers">HuggingFace Transformers</a> library and demonstrated:</p>
+<ol>
+<li><p>how to <a href="https://talman.io/nli/pytorch/demo/2020/12/11/natural-language-inference-with-pytorch-and-transformers.html">train a classification model for NLI</a></p>
+</li>
+<li><p>how to use an NLI model to <a href="https://talman.io/nli/pytorch/demo/2020/12/12/article-ranking-with-an-nli-model.html">rank news articles</a> based on a keyword</p>
+</li>
+</ol>
 <p>In this post I will show how to use a pre-trained sentence encoder model to create a simple semantic search engine for website content. The search engine will be "semantic" in the sense that it will try to find sentences from the website whose vector representation "matches" the vector representation of the search term.</p>
 <p>We will use a pre-trained transformers model to encode all the sentences of a website as well as the search term and then calculate the <a href="https://en.wikipedia.org/wiki/Cosine_similarity">cosine similarity</a> between each encoded sentence and the search term. We will then rank the sentences based on the cosine similarity.</p>
 <p>Let's get started. As before we will first install the libraries we need for this demo. We are using a library called <a href="https://github.com/UKPLab/sentence-transformers">Sentence Transformers</a>, which provides pre-trained transformers models specifically for the purpose of computing sentence-level vector representations. We also need to install scikit-learn, as we will use it to calculate the cosine similarities between sentence vectors.</p>
