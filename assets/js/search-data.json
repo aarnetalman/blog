@@ -49,20 +49,9 @@
   
 
   
-      ,"page2": {
-          "title": "Code and Data",
-          "content": "Software . Prosody: A system for predicting prosodic prominence from written text. License: MIT | Paper | . | Natural Language Inference: Natural language inference system written in Python and PyTorch implementing the HBMP sentence encoder. License: MIT | Paper | . | NLP Notebooks: Jupyter notebooks exploring different NLP/ML use cases and tasks. | Data . Helsinki Prosody Corpus: The prosody corpus contains automatically generated, high quality prosodic annotations for the LibriTTS corpus (Zen et al. 2019) using the Continuous Wavelet Transform Annotation method (Suni et al. 2017). Language: English | License: CC BY 4.0 | Paper | . |",
-          "url": "https://talman.io/code/",
-          "relUrl": "/code/",
-          "date": ""
-      }
-      
-  
 
   
-
-  
-      ,"page4": {
+      ,"page3": {
           "title": "Publications and Talks",
           "content": "Academic Publications . See my Google Scholar profile. . Aarne Talman, Antti Suni, Hande Celikkanat, Sofoklis Kakouros, Jörg Tiedemann and Martti Vainio. 2019. Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations. Proceedings of NoDaLiDa 2019. [bibtex] [pdf] [corpus and code] | Aarne Talman, Umut Sulubacak, Raúl Vázquez, Yves Scherrer, Sami Virpioja, Alessandro Raganato, Arvi Hurskainen, and Jörg Tiedemann. 2019. The University of Helsinki submissions to the WMT19 news translation task. Proceedings of the Fourth Conference on Machine Translation: Shared Task Papers. [bibtex] [pdf] | Aarne Talman and Stergios Chatzikyriakidis. 2019. Testing the Generalization Power of Neural Network Models Across NLI Benchmarks. Proceedings of the 2019 ACL Workshop BlackboxNLP: Analyzing and Interpreting Neural Networks for NLP. [bibtex] [pdf] | Aarne Talman, Anssi Yli-Jyrä and Jörg Tiedemann. 2019. Sentence Embeddings in NLI with Iterative Refinement Encoders. Natural Language Engineering 25(4). [bibtex] [pdf] [code] | Academic Talks . Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations. 14 November 2019, Research Seminar in Language Technology, University of Helsinki. [pdf] | Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations. 2 October 2019, NoDaLiDa 2019, Turku. [pdf] | Neural Network models of NLI fail to capture the general notion of inference, 8 March 2019, CLASP Seminar, University of Gothenburg. [pdf] | State-of-the-Art Natural Language Inference Systems Fail to Capture the Semantics of Inference, 25 October 2018, Research Seminar in Language Technology, University of Helsinki. [pdf] | Natural Language Inference with Hierarchical BiLSTM’s, 28 September 2018, FoTran 2018. [pdf] | Natural Language Inference - Another Triumph for Deep Learning?, 23 November 2017, Research Seminar in Language Technology, University of Helsinki. [pdf] |",
           "url": "https://talman.io/publications/",
@@ -78,6 +67,17 @@
   
 
   
+  
+
+  
+      ,"page7": {
+          "title": "Software and Data",
+          "content": "Software . Prosody: A system for predicting prosodic prominence from written text. License: MIT | Paper | . | Natural Language Inference: Natural language inference system written in Python and PyTorch implementing the HBMP sentence encoder. License: MIT | Paper | . | NLP Notebooks: Jupyter notebooks exploring different NLP/ML use cases and tasks. | Data . Helsinki Prosody Corpus: The prosody corpus contains automatically generated, high quality prosodic annotations for the LibriTTS corpus (Zen et al. 2019) using the Continuous Wavelet Transform Annotation method (Suni et al. 2017). Language: English | License: CC BY 4.0 | Paper | . |",
+          "url": "https://talman.io/software/",
+          "relUrl": "/software/",
+          "date": ""
+      }
+      
   
 
   
