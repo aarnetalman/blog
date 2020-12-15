@@ -64,7 +64,7 @@
   
       ,"page4": {
           "title": "Resources",
-          "content": "Software . Prosody: A system for predicting prosodic prominence from written text. License: MIT | Paper | . | Natural Language Inference: Natural language inference system written in Python and PyTorch implementing the HBMP sentence encoder. License: MIT | Paper | . | Data . Helsinki Prosody Corpus: The prosody corpus contains automatically generated, high quality prosodic annotations for the LibriTTS corpus (Zen et al. 2019) using the Continuous Wavelet Transform Annotation method (Suni et al. 2017). Language: English | License: CC BY 4.0 | Paper | . |",
+          "content": "Software . Prosody: A system for predicting prosodic prominence from written text. License: MIT | Paper | . | Natural Language Inference: Natural language inference system written in Python and PyTorch implementing the HBMP sentence encoder. License: MIT | Paper | . | NLP Notebooks: Jupyter notebooks exploring different NLP/ML use cases and tasks. | Data . Helsinki Prosody Corpus: The prosody corpus contains automatically generated, high quality prosodic annotations for the LibriTTS corpus (Zen et al. 2019) using the Continuous Wavelet Transform Annotation method (Suni et al. 2017). Language: English | License: CC BY 4.0 | Paper | . |",
           "url": "https://talman.io/resources/",
           "relUrl": "/resources/",
           "date": ""
