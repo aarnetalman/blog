@@ -11,6 +11,8 @@ permalink: /resources/
 2.  **[Natural Language Inference](https://github.com/Helsinki-NLP/HBMP)**: Natural language inference system written in Python and PyTorch implementing the HBMP sentence encoder.
     *   License: MIT
     *   [Paper](https://www.cambridge.org/core/journals/natural-language-engineering/article/sentence-embeddings-in-nli-with-iterative-refinement-encoders/AC811644D52446E414333B20FEACE00F)
+3. **[NLP Notebooks](https://github.com/aarnetalman/Notebooks)**:
+Jupyter notebooks exploring different NLP/ML use cases and tasks.
 
 ### Data
 
