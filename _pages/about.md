@@ -11,6 +11,8 @@ I work as the CTO at [Nordcloud](https://www.nordcloud.com) UK.
 I have 15 years of experience in software development, architecture, management consulting, startup business, 
 AI/ML and NLP development and academic research.
 
+Download my full [CV](../files/cv_aarne_talman.pdf).
+
 ### Education
 
 *   **2018 - present**, PhD in Language Technology, [University of Helsinki](http://www.helsinki.fi/university "University of Helsinki")
