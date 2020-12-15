@@ -5,7 +5,7 @@ permalink: /publications/
 ---
 ### Academic Publications
 
-See my [Google Scholar profile] (https://scholar.google.com/citations?user=kKvJ8QIAAAAJ&hl=en).
+See my [Google Scholar profile](https://scholar.google.com/citations?user=kKvJ8QIAAAAJ&hl=en).
 
 1.  **Aarne Talman**, Antti Suni, Hande Celikkanat, Sofoklis Kakouros, Jörg Tiedemann and Martti Vainio. 2019\. [Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations](https://aclweb.org/anthology/W19-6129/ "Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations"). Proceedings of NoDaLiDa 2019\. [[bibtex](https://aclweb.org/anthology/W19-6129.bib)] [[pdf](https://www.aclweb.org/anthology/W19-6129.pdf)] [[corpus and code](https://github.com/Helsinki-NLP/prosody)]
 2.  **Aarne Talman**, Umut Sulubacak, Raúl Vázquez, Yves Scherrer, Sami Virpioja, Alessandro Raganato, Arvi Hurskainen, and Jörg Tiedemann. 2019\. [The University of Helsinki submissions to the WMT19 news translation task](https://www.aclweb.org/anthology/W19-5347/ "The University of Helsinki submissions to the WMT19 news translation task"). Proceedings of the Fourth Conference on Machine Translation: Shared Task Papers. [[bibtex](https://www.aclweb.org/anthology/W19-5347.bib)] [[pdf](https://www.aclweb.org/anthology/W19-5347.pdf)]
