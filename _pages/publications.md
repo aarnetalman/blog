@@ -15,7 +15,7 @@ See my [Google Scholar profile](https://scholar.google.com/citations?user=kKvJ8Q
 
 ### Academic Talks
 
-1.  Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations. 2 October 2019, [NodaLiDa 2019](https://nodalida2019.org "NoDaLiDa 2019"), Turku. [[pdf](../assets/files/Talman_NoDaLiDa_Oct_2019.pdf)]
+1.  Predicting Prosodic Prominence from Text with Pre-trained Contextualized Word Representations. 2 October 2019, [NoDaLiDa 2019](https://nodalida2019.org "NoDaLiDa 2019"), Turku. [[pdf](../assets/files/Talman_NoDaLiDa_Oct_2019.pdf)]
 2.  Neural Network models of NLI fail to capture the general notion of inference, 8 March 2019, [CLASP Seminar](https://clasp.gu.se/news-events/e/?eventId=70136843492 "CLASP Seminar"), University of Gothenburg. [[pdf](../assets/files/Seminar_Gothenburg_March_2019.pdf)]
 3.  State-of-the-Art Natural Language Inference Systems Fail to Capture the Semantics of Inference, 25 October 2018, [Research Seminar in Language Technology](https://blogs.helsinki.fi/language-technology/research-seminar/ "Research Seminar in Language Technology"), University of Helsinki. [[pdf](../assets/files/Talman_HY-LT-Seminar-Oct-2018.pdf)]
 4.  Natural Language Inference with Hierarchical BiLSTM’s, 28 September 2018, [FoTran 2018](https://blogs.helsinki.fi/language-technology/fotran-2018/ "FoTran 2018"). [[pdf](../assets/files/FoTran2018-Talman.pdf)]
