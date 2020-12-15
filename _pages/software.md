@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Code and Data
-permalink: /code/
+title: Software and Data
+permalink: /software/
 ---
 ### Software
 
