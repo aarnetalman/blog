@@ -236,7 +236,7 @@ window.onload = wrap_img;
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">nli_data</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;multi_nli&quot;</span><span class="p">)</span>
 
 <span class="n">train_data</span> <span class="o">=</span> <span class="n">nli_data</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][:</span><span class="mi">20000</span><span class="p">]</span> <span class="c1"># limiting the training set size to 20,000 for demo purposes</span>
-<span class="n">train_labels</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">][:</span><span class="mi">20000</span><span class="p">]</span> <span class="c1"># limiting the training set size to 20,000 for demo purposes</span>
+<span class="n">train_labels</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
 
 <span class="n">dev_data</span> <span class="o">=</span> <span class="n">nli_data</span><span class="p">[</span><span class="s1">&#39;validation_matched&#39;</span><span class="p">]</span>
 <span class="n">val_labels</span> <span class="o">=</span> <span class="n">dev_data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
