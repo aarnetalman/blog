@@ -1,9 +1,9 @@
 ---
 layout: page
-title: Software and Data
-permalink: /software/
+title: Code
+permalink: /code/
 ---
-### Software
+### Code
 
 1.  **[Prosody](https://github.com/Helsinki-NLP/prosody)**: A system for predicting prosodic prominence from written text.
     *   License: MIT
@@ -13,6 +13,8 @@ permalink: /software/
     *   [Paper](https://www.cambridge.org/core/journals/natural-language-engineering/article/sentence-embeddings-in-nli-with-iterative-refinement-encoders/AC811644D52446E414333B20FEACE00F)
 3. **[NLP Notebooks](https://github.com/aarnetalman/Notebooks)**:
 Jupyter notebooks exploring different NLP/ML use cases and tasks.
+4. **[NLI with Transformers](https://github.com/aarnetalman/nli-with-transformers)**:
+COde for fine-tuning different transformers models with NLI data.
 
 ### Data
 
