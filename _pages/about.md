@@ -4,14 +4,7 @@ title: About
 permalink: /about/
 ---
 
-![](../images/aarne.png){:style="float: left;margin-right: 15px;margin-top: 5px; width: 120px"} I'm a researcher in Language Technology at [University of Helsinki](https://blogs.helsinki.fi/language-technology/). 
-My research focuses on computational semantics, natural language understanding, machine translation and machine learning.
-
-I work as the CTO at [Nordcloud](https://www.nordcloud.com) UK. 
-I have 15 years of experience in software development, architecture, management consulting, startup business, 
-AI/ML and NLP development and academic research.
-
-See my full [CV](../assets/files/cv_aarne_talman.pdf).
+See my full [CV](../assets/files/cv_aarne_talman.pdf) or find me on [LinkedIn](https://linkedin.com/in/talman).
 
 ### Education
 
