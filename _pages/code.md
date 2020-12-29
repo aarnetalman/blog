@@ -14,7 +14,7 @@ permalink: /code/
 3. **[NLP Notebooks](https://github.com/aarnetalman/Notebooks)**:
 Jupyter notebooks exploring different NLP/ML use cases and tasks.
 4. **[NLI with Transformers](https://github.com/aarnetalman/nli-with-transformers)**:
-COde for fine-tuning different transformers models with NLI data.
+Code for fine-tuning different transformers models with NLI data.
 
 ### Data
 
