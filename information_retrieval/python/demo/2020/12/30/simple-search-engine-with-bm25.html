@@ -11,13 +11,13 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Demo on how to build a search engine using Python and the BM25 algorithm" />
 <meta property="og:description" content="Demo on how to build a search engine using Python and the BM25 algorithm" />
-<link rel="canonical" href="https://talman.io/information%20retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html" />
-<meta property="og:url" content="https://talman.io/information%20retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html" />
+<link rel="canonical" href="https://talman.io/information_retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html" />
+<meta property="og:url" content="https://talman.io/information_retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html" />
 <meta property="og:site_name" content="Aarne Talman" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-12-30T00:00:00-06:00" />
 <script type="application/ld+json">
-{"url":"https://talman.io/information%20retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html","@type":"BlogPosting","headline":"Simple Bag-of-Words Search Engine in Python","dateModified":"2020-12-30T00:00:00-06:00","datePublished":"2020-12-30T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://talman.io/information%20retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html"},"author":{"@type":"Person","name":"Aarne Talman"},"description":"Demo on how to build a search engine using Python and the BM25 algorithm","@context":"https://schema.org"}</script>
+{"url":"https://talman.io/information_retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html","@type":"BlogPosting","headline":"Simple Bag-of-Words Search Engine in Python","dateModified":"2020-12-30T00:00:00-06:00","datePublished":"2020-12-30T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://talman.io/information_retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html"},"author":{"@type":"Person","name":"Aarne Talman"},"description":"Demo on how to build a search engine using Python and the BM25 algorithm","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://talman.io/feed.xml" title="Aarne Talman" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -101,7 +101,7 @@ window.onload = wrap_img;
     
       <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
       
-        <a class="category-tags-link" href="/categories/#information retrieval">information retrieval</a>
+        <a class="category-tags-link" href="/categories/#information_retrieval">information_retrieval</a>
         &nbsp;
       
         <a class="category-tags-link" href="/categories/#python">python</a>
@@ -144,7 +144,7 @@ window.onload = wrap_img;
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In my <a href="https://talman.io/search/demo/2020/12/14/simple-semantic-search-engine-with-transformers.html">previous post</a> I showed how to build a simple semantic search engine using pre-trained transformer models.</p>
+<p>In my <a href="https://talman.io/information_retrieval/demo/2020/12/14/simple-semantic-search-engine-with-transformers.html">previous post</a> I showed how to build a simple semantic search engine using pre-trained transformer models.</p>
 <p>In this post I will show how to build a simple search engine using Python and the BM25 ranking algorithm. <a href="https://en.wikipedia.org/wiki/Okapi_BM25">BM25</a> is a bag-of-words ranking function designed for information retrieval. It is an enhanced version of the term frequency–inverse document frequency (<a href="https://en.wikipedia.org/wiki/Tf–idf">tf-idf</a>) method.</p>
 <p>The basic idea behind tf-idf is that it looks at the frequency of the term in the document (more the better) and it looks at the inverse document frequency (common words are less important). One of the drawbacks of the standard tf-idf is that long documents with the same term frequency are considered less important.</p>
 <p>BM25 makes couple of enhancements to the traditional tf-idf. First, BM25 adds a term frequency saturation to tf-idf, limiting the influence of term frequency on the score. Intuitively this means that more frequent the term is the less impact each occurence of it has on the score. Second, BM25 adds a document length weighting, which makes sure that document length doesn't have such a dramatic negative impact on the relevance score as in tf-idf.</p>
@@ -544,7 +544,7 @@ inference.
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/information%20retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html" hidden></a>
+</script><a class="u-url" href="/information_retrieval/python/demo/2020/12/30/simple-search-engine-with-bm25.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
