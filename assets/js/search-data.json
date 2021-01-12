@@ -87,10 +87,14 @@
   
 
   
+
+  
   
 
   
-      ,"page7": {
+
+  
+      ,"page9": {
           "title": "Teaching",
           "content": "University of Helsinki . Instructor: Natural Language Understanding and Representation Learning. Spring 2020. | Supervision: Learning and evaluation of multilingual sentence representations (Master Thesis) | Reading Group: Representation Learning for Natural Language Understanding. Autumn 2019. | Teaching Assistant: KIK-LG210 Machine Learning for Linguists. Spring 2019. | Teaching Assistant: LDA-T3115 A Practical Introduction to Modern Neural Machine Translation. Spring 2019. | . Other . Lab monitor / TA: 2019 Lisbon Machine Learning School (LxMLS 2019). | .",
           "url": "https://talman.io/teaching/",
@@ -110,7 +114,7 @@
   
 
   
-      ,"page11": {
+      ,"page13": {
           "title": "",
           "content": "Sitemap: {{ “sitemap.xml” | absolute_url }} | .",
           "url": "https://talman.io/robots.txt",
