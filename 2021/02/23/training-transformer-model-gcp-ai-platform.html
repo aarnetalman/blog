@@ -245,6 +245,7 @@ window.onload = wrap_img;
 </code></pre></div></div>
 
 <p>The <code class="language-plaintext highlighter-rouge">save_model</code> function will save the trained model once it’s been trained and uploads it to Google Cloud Storage.</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="s">"""Saves the model to Google Cloud Storage
 
@@ -270,6 +271,7 @@ window.onload = wrap_img;
 </code></pre></div></div>
 
 <p>The <code class="language-plaintext highlighter-rouge">model.py</code> file contains code for the transformer model RoBERTa. The <code class="language-plaintext highlighter-rouge">create</code> function initialises the model and the optimiser.</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Specify the Transformer model
 </span><span class="k">class</span> <span class="nc">RoBERTaModel</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -327,6 +329,7 @@ window.onload = wrap_img;
 </span>                    <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">),</span> <span class="c1"># Batch
 </span>                    <span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()))</span> <span class="c1"># Loss
 </span></code></pre></div></div>
+
 <p>The <code class="language-plaintext highlighter-rouge">evaluate</code> function takes the development or test dataloader as an input and evaluates the prediction accuracy of our model. This will be called after each training epoch using the development dataloader and after the training has finished using the test dataloader.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
@@ -432,6 +435,7 @@ window.onload = wrap_img;
     <span class="n">description</span><span class="o">=</span><span class="s">'Sequence Classification with Transformers on GCP AI Platform'</span>
 <span class="p">)</span>
 </code></pre></div></div>
+
 <p>The <code class="language-plaintext highlighter-rouge">config.yaml</code> file contains information about the compute instance used for training the model. For this job we need use an NVIDIA V100 GPU as it provides improved training speed and larger GPU memory compared to the cheaper K80 GPUs.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">trainingInput</span><span class="pi">:</span>
@@ -444,40 +448,41 @@ window.onload = wrap_img;
 </code></pre></div></div>
 <p>Finally the <code class="language-plaintext highlighter-rouge">scripts</code> directory contains the <code class="language-plaintext highlighter-rouge">train-gcp.sh</code> script which includes the required environment variables as will as the gcloud command to submit the AI Platform Training job.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># BUCKET_NAME: unique bucket name
-BUCKET_NAME=-name-of-your-gs-bucket
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># BUCKET_NAME: unique bucket name</span>
+<span class="nv">BUCKET_NAME</span><span class="o">=</span><span class="nt">-name-of-your-gs-bucket</span>
 
-# The PyTorch image provided by AI Platform Training.
-IMAGE_URI=gcr.io/cloud-ml-public/training/pytorch-gpu.1-4
+<span class="c"># The PyTorch image provided by AI Platform Training.</span>
+<span class="nv">IMAGE_URI</span><span class="o">=</span>gcr.io/cloud-ml-public/training/pytorch-gpu.1-4
 
-# JOB_NAME: the name of your job running on AI Platform.
-JOB_NAME=transformers_job_$(date +%Y%m%d_%H%M%S)
+<span class="c"># JOB_NAME: the name of your job running on AI Platform.</span>
+<span class="nv">JOB_NAME</span><span class="o">=</span>transformers_job_<span class="si">$(</span><span class="nb">date</span> +%Y%m%d_%H%M%S<span class="si">)</span>
 
-echo "Submitting AI Platform Training job: ${JOB_NAME}"
+<span class="nb">echo</span> <span class="s2">"Submitting AI Platform Training job: </span><span class="k">${</span><span class="nv">JOB_NAME</span><span class="k">}</span><span class="s2">"</span>
 
-PACKAGE_PATH=./trainer # this can be a GCS location to a zipped and uploaded package
+<span class="nv">PACKAGE_PATH</span><span class="o">=</span>./trainer <span class="c"># this can be a GCS location to a zipped and uploaded package</span>
 
-REGION=us-central1
+<span class="nv">REGION</span><span class="o">=</span>us-central1
 
-# JOB_DIR: Where to store prepared package and upload output model.
-JOB_DIR=gs://${BUCKET_NAME}/${JOB_NAME}/models
+<span class="c"># JOB_DIR: Where to store prepared package and upload output model.</span>
+<span class="nv">JOB_DIR</span><span class="o">=</span>gs://<span class="k">${</span><span class="nv">BUCKET_NAME</span><span class="k">}</span>/<span class="k">${</span><span class="nv">JOB_NAME</span><span class="k">}</span>/models
 
-gcloud ai-platform jobs submit training ${JOB_NAME} \
-    --region ${REGION} \
-    --master-image-uri ${IMAGE_URI} \
-    --config config.yaml \
-    --job-dir ${JOB_DIR} \
-    --module-name trainer.task \
-    --package-path ${PACKAGE_PATH} \
-    -- \
-    --epochs 2 \
-    --batch_size 16 \
-    --learning_rate 2e-5
+gcloud ai-platform <span class="nb">jobs </span>submit training <span class="k">${</span><span class="nv">JOB_NAME</span><span class="k">}</span> <span class="se">\</span>
+    <span class="nt">--region</span> <span class="k">${</span><span class="nv">REGION</span><span class="k">}</span> <span class="se">\</span>
+    <span class="nt">--master-image-uri</span> <span class="k">${</span><span class="nv">IMAGE_URI</span><span class="k">}</span> <span class="se">\</span>
+    <span class="nt">--config</span> config.yaml <span class="se">\</span>
+    <span class="nt">--job-dir</span> <span class="k">${</span><span class="nv">JOB_DIR</span><span class="k">}</span> <span class="se">\</span>
+    <span class="nt">--module-name</span> trainer.task <span class="se">\</span>
+    <span class="nt">--package-path</span> <span class="k">${</span><span class="nv">PACKAGE_PATH</span><span class="k">}</span> <span class="se">\</span>
+    <span class="nt">--</span> <span class="se">\</span>
+    <span class="nt">--epochs</span> 2 <span class="se">\</span>
+    <span class="nt">--batch_size</span> 16 <span class="se">\</span>
+    <span class="nt">--learning_rate</span> 2e-5
+
+gcloud ai-platform <span class="nb">jobs </span>stream-logs <span class="k">${</span><span class="nv">JOB_NAME</span><span class="k">}</span>
 </code></pre></div></div>
 
-<p>To monitor the training job you can stream the logs using gcloud:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud ai-platform jobs stream-logs ${JOB_NAME}
-</code></pre></div></div>
+<p>The list line of this script streams the logs directly to your command line.</p>
+
 <p>Alternatively you can head to GCP console and navigate to AI Platform jobs and select <em>View logs</em>.
 <img src="https://talman.io/images/ai-platform-logs.png" alt="Logs" />
 You can also view the GPU utilisation and memory from the AI Platform job page.
