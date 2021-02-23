@@ -395,11 +395,12 @@ gcloud ai-platform jobs submit training ${JOB_NAME} \
 gcloud ai-platform jobs stream-logs ${JOB_NAME}
 ```
 
-The list line of this script streams the logs directly to your command line. 
+The list line of this script streams the logs directly to your command line. Alternatively you can head to GCP console and navigate to AI Platform jobs and select *View logs*.
 
-Alternatively you can head to GCP console and navigate to AI Platform jobs and select *View logs*.
 ![Logs](https://talman.io/images/ai-platform-logs.png)
+
 You can also view the GPU utilisation and memory from the AI Platform job page.
+
 ![Monitoring GPU utilisation](https://talman.io/images/ai-platform-metrics.png)
 
 
