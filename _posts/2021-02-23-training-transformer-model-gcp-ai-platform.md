@@ -3,7 +3,7 @@ layout: post
 title:  "Training PyTorch Transformers on GCP AI Platform"
 ---
 
-Google Cloud Platform (GCP) is widely known for its great AI and machine learning capabilities and products. In fact there are tons of material available on how you can train and deploy TensorFlow models on GCP. However, GCP is not just for people using TensorFlow. It has good support for other frameworks as well. In this post I will show how to use another highly popular ML framework PyTorch on AI Platform Training. I will show how to fine-tune a state-of-the-art sequence classification model using PyTorch and the [`transformers`](HuggingFace Transformers) library. We will be using a pre-trained [RoBERTa](https://huggingface.co/transformers/model_doc/roberta.html) as the transformer model for this task.
+Google Cloud Platform (GCP) is widely known for its great AI and machine learning capabilities and products. In fact, there are tons of material available on how you can train and deploy TensorFlow models on GCP. However, GCP is not just for people using TensorFlow but it has good support for other frameworks as well. In this post I will show how to use another highly popular ML framework PyTorch on AI Platform Training. I will show how to fine-tune a state-of-the-art sequence classification model using PyTorch and the [`transformers`](HuggingFace Transformers) library. We will be using a pre-trained [RoBERTa](https://huggingface.co/transformers/model_doc/roberta.html) as the transformer model for this task.
 
 This post covers the following topics:
 * How to structure your ML project for AI Platform Training
