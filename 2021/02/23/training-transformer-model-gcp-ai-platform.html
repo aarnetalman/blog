@@ -438,7 +438,7 @@ window.onload = wrap_img;
 <span class="p">)</span>
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">config.yaml</code> file contains information about the compute instance used for training the model. For this job we need use an NVIDIA V100 GPU as it provides improved training speed and larger GPU memory compared to the cheaper K80 GPUs.</p>
+<p>The <code class="language-plaintext highlighter-rouge">config.yaml</code> file contains information about the compute instance used for training the model. For this job we need use an NVIDIA V100 GPU as it provides improved training speed and larger GPU memory compared to the cheaper K80 GPUs. See <a href="https://cloud.google.com/blog/products/ai-machine-learning/your-ml-workloads-cheaper-and-faster-with-the-latest-gpus">this great blog post</a> by Google on selecting a GPU.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">trainingInput</span><span class="pi">:</span>
   <span class="na">scaleTier</span><span class="pi">:</span> <span class="s">CUSTOM</span>
