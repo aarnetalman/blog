@@ -1,6 +1,8 @@
 ---
 layout: post
 title:  "Training PyTorch Transformers on GCP AI Platform"
+subtitle: "Demo on how to train a state-of-the-art sequence classification model on Google Cloud Platform"
+
 ---
 
 # Training PyTorch Transformers on GCP AI Platform
