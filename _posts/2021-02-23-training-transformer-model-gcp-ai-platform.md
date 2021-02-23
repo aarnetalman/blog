@@ -350,7 +350,7 @@ setup(
 )
 ```
 
-The `config.yaml` file contains information about the compute instance used for training the model. For this job we need use an NVIDIA V100 GPU as it provides improved training speed and larger GPU memory compared to the cheaper K80 GPUs. 
+The `config.yaml` file contains information about the compute instance used for training the model. For this job we need use an NVIDIA V100 GPU as it provides improved training speed and larger GPU memory compared to the cheaper K80 GPUs. See [this great blog post](https://cloud.google.com/blog/products/ai-machine-learning/your-ml-workloads-cheaper-and-faster-with-the-latest-gpus) by Google on selecting a GPU. 
 
 ```yaml
 trainingInput:
