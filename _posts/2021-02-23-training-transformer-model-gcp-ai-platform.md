@@ -1,8 +1,6 @@
 ---
 layout: post
 title:  "Training PyTorch Transformers on GCP AI Platform"
-subtitle: "Demo on how to train a state-of-the-art sequence classification model on Google Cloud Platform"
-
 ---
 
 Google Cloud Platform (GCP) is widely known for its great AI and machine learning capabilities and products. In fact there are tons of material available on how you can train and deploy TensorFlow models on GCP. However, GCP is not just for people using TensorFlow. It has good support for other frameworks as well. In this post I will show how to use another highly popular ML framework PyTorch on AI Platform Training. I will show how to fine-tune a state-of-the-art sequence classification model using PyTorch and the [`transformers`](HuggingFace Transformers) library. We will be using a pre-trained [RoBERTa](https://huggingface.co/transformers/model_doc/roberta.html) as the transformer model for this task.
@@ -362,12 +360,17 @@ Finally the `scripts` directory contains the `train-gcp.sh` script which include
 ```
 # BUCKET_NAME: unique bucket name
 BUCKET_NAME=-name-of-your-gs-bucket
+
 # The PyTorch image provided by AI Platform Training.
 IMAGE_URI=gcr.io/cloud-ml-public/training/pytorch-gpu.1-4
+
 # JOB_NAME: the name of your job running on AI Platform.
 JOB_NAME=transformers_job_$(date +%Y%m%d_%H%M%S)
+
 echo "Submitting AI Platform Training job: ${JOB_NAME}"
+
 PACKAGE_PATH=./trainer # this can be a GCS location to a zipped and uploaded package
+
 REGION=us-central1
 
 # JOB_DIR: Where to store prepared package and upload output model.
