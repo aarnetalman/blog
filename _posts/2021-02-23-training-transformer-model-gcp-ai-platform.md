@@ -1,10 +1,9 @@
+---
+layout: post
+title:  "Training PyTorch Transformers on GCP AI Platform"
+---
+
 # Training PyTorch Transformers on GCP AI Platform
-> Demo on how to train a state-of-the-art sequence classification model on Google Cloud Platform
- 
-- toc: false
-- comments: true
-- author: Aarne Talman
-- categories: [cloud, gcp, python, demo]
 
 Google Cloud Platform (GCP) is widely known for its great AI and machine learning capabilities and products. In fact there are tons of material available on how you can train and deploy TensorFlow models on GCP. However, GCP is not just for people using TensorFlow. It has good support for other frameworks as well. In this post I will show how to use another highly popular ML framework PyTorch on AI Platform Training. I will show how to fine-tune a state-of-the-art sequence classification model using PyTorch and the [`transformers`](HuggingFace Transformers) library. We will be using a pre-trained [RoBERTa](https://huggingface.co/transformers/model_doc/roberta.html) as the transformer model for this task.
 
@@ -13,7 +12,7 @@ This post covers the following topics:
 * Code for the model, the training routine and evaluation of the model
 * How to launch and monitor your training job
 
-You can find all the code in this GitHub repo: 
+You can find all the code on [Github](https://github.com/aarnetalman/transformers-sequence-classification-gcp).
 
 ## ML Project Structure
 
@@ -39,9 +38,9 @@ The `scripts` directory contains our training scripts that will configure the re
 
 ## PyTorch Code for Training the Model
 
-Let's look at the contents of our python package. the first one, `__init__.py` is just an empty file. This needs to be in place and located in each subdirectory. The init files will be used by Python [Setuptools](https://setuptools.readthedocs.io/en/latest/) to identify directories with code to package. It is OK to leave this file empty. 
+Let's look at the contents of our python package. The first file, `__init__.py` is just an empty file. This needs to be in place and located in each subdirectory. The init files will be used by Python [Setuptools](https://setuptools.readthedocs.io/en/latest/) to identify directories with code to package. It is OK to leave this file empty. 
 
-The rest of the files contain different parts of our PyTorch software. `task.py` is our main file and will be called by AI Platform Training. It retrieves the command line arguments for our training task and passes those to the `run` function in `experiment.py`. The contents of `task.py` are below.
+The rest of the files contain different parts of our PyTorch software. `task.py` is our main file and will be called by AI Platform Training. It retrieves the command line arguments for our training task and passes those to the `run` function in `experiment.py`.
 
 ```python
 def get_args():
