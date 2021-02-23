@@ -176,7 +176,7 @@ def save_model(args):
     blob.upload_from_filename(args.model_name)
 ```
 
-The `model.py` file contains code for the transformer model RoBERTa. The `__init__` function initialises the module and defines the transformer model to use. The `forward` function will be called by PyTorch during execution of the code using the input batch of tokenised sentences together with the associated labels. The `create` function is used to initialises the model and the optimiser.
+The `model.py` file contains code for the transformer model RoBERTa. The `__init__` function initialises the module and defines the transformer model to use. The `forward` function will be called by PyTorch during execution of the code using the input batch of tokenised sentences together with the associated labels. The `create` function is a wrapper that is used to initialise the model and the optimiser during execution.
 
 ```python
 # Specify the Transformer model
