@@ -6,17 +6,10 @@ permalink: /about/
 
 See my full [CV](../assets/files/cv_aarne_talman.pdf) or find me on [LinkedIn](https://linkedin.com/in/talman).
 
-### Education
-
-*   **2018 - present**, PhD in Language Technology, [University of Helsinki](http://www.helsinki.fi/university "University of Helsinki")
-*   **2005 - 2007**, MSc in Computational Linguistics and Formal Grammar, [King's College London](http://www.kcl.ac.uk/ "KCL")  
-    Graduated with Distinction.
-*   **2002 - 2005**, BSc in Philosophy, [London School of Economics](http://www2.lse.ac.uk/home.aspx "LSE")  
-    Graduated with First Class Honours.
-
 ### Employment
 
-*   **2020 - present**, CTO, [Nordcloud UK](https://nordcloud.com "Nordcloud UK")
+*   **2021 - present**, Global AI/ML Practice Lead, [Nordcloud UK](https://nordcloud.com "Nordcloud")
+*   **2020 - 2021**, CTO, [Nordcloud UK](https://nordcloud.com "Nordcloud UK")
 *   **2018 - 2020**, Doctoral Researcher, [Language Technology,](https://blogs.helsinki.fi/language-technology/ "University of Helsinki") University of Helsinki  
     Working on computational semantics and natural language processing.
 *   **2019 - present**, Founder, [Basement AI](https://basement.ai "Basement AI")  
@@ -28,3 +21,11 @@ See my full [CV](../assets/files/cv_aarne_talman.pdf) or find me on [LinkedIn](h
 *   **2008 - 2009**, Manager, [Nokia](https://www.nokia.com/about-us/ "Nokia").
 *   **2006 - 2008**, Systems Analyst, [Tieto](http://www.tieto.com/ "Tieto").
 *   **2006 - 2006**, Software Developer, [Valuatum](http://www.valuatum.com/ "Valuatum").
+
+### Education
+
+*   **2018 - present**, PhD in Language Technology, [University of Helsinki](http://www.helsinki.fi/university "University of Helsinki")
+*   **2005 - 2007**, MSc in Computational Linguistics and Formal Grammar, [King's College London](http://www.kcl.ac.uk/ "KCL")  
+    Graduated with Distinction.
+*   **2002 - 2005**, BSc in Philosophy, [London School of Economics](http://www2.lse.ac.uk/home.aspx "LSE")  
+    Graduated with First Class Honours.
