@@ -365,7 +365,7 @@ Finally the `scripts` directory contains the `train-gcp.sh` script which include
 
 ```bash
 # BUCKET_NAME: unique bucket name
-BUCKET_NAME=-name-of-your-gs-bucket
+BUCKET_NAME=name-of-your-gs-bucket
 
 # The PyTorch image provided by AI Platform Training.
 IMAGE_URI=gcr.io/cloud-ml-public/training/pytorch-gpu.1-4
