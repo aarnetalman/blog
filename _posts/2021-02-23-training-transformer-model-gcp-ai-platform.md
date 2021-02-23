@@ -28,7 +28,7 @@ Let's start with the contents of our ML project.
 ├── config.yaml
 └── setup.py
 ```
-The `trainer` directory contains all the python files required to train the model. The contents of this directory will be packaged and submitted to AI platform. You can find more details and best practices on how to package your training application [here](https://cloud.google.com/ai-platform/training/docs/packaging-trainer). We will look at the contents of the individual files later in this post.
+The `trainer` directory contains all the python files required to train the model. The contents of this directory will be packaged and submitted to AI Platform. You can find more details and best practices on how to package your training application [here](https://cloud.google.com/ai-platform/training/docs/packaging-trainer). We will look at the contents of the individual files later in this post.
 
 The `scripts` directory contains our training scripts that will configure the required environment variables and submit the job to AI Platform Training.
 
@@ -176,7 +176,7 @@ def save_model(args):
     blob.upload_from_filename(args.model_name)
 ```
 
-The `model.py` file contains code for the transformer model RoBERTa. The `create` function initialises the model and the optimiser.  
+The `model.py` file contains code for the transformer model RoBERTa. The `__init__` function initialises the module and defines the transformer model to use. The `forward` function will be called by PyTorch during execution of the code using the input batch of tokenised sentences together with the associated labels. The `create` function is used to initialises the model and the optimiser.
 
 ```python
 # Specify the Transformer model
