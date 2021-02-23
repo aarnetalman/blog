@@ -419,7 +419,7 @@ table th { text-align: center !important; }
 
 .code_cell { margin: 1.5rem 0px !important; }
 
-pre code { font-size: 15px !important; }
+pre code { font-size: 14px !important; }
 
 /*-----------------------------------*/
 /*----- ADD YOUR STYLES BELOW -------*/
@@ -476,7 +476,7 @@ pre code { font-size: 15px !important; }
 
 .highlight .gd { color: #ff5555; }
 
-p code { font-size: 16px; }
+p code { font-size: 14px; }
 
 .post-content p, .post-content li { font-size: 16px; }
 

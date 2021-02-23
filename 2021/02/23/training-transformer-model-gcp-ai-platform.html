@@ -126,7 +126,7 @@ window.onload = wrap_img;
 ├── config.yaml
 └── setup.py
 </code></pre></div></div>
-<p>The <code class="language-plaintext highlighter-rouge">trainer</code> directory contains all the python files required to train the model. The contents of this directory will be packaged and submitted to AI platform. You can find more details and best practices on how to package your training application <a href="https://cloud.google.com/ai-platform/training/docs/packaging-trainer">here</a>. We will look at the contents of the individual files later in this post.</p>
+<p>The <code class="language-plaintext highlighter-rouge">trainer</code> directory contains all the python files required to train the model. The contents of this directory will be packaged and submitted to AI Platform. You can find more details and best practices on how to package your training application <a href="https://cloud.google.com/ai-platform/training/docs/packaging-trainer">here</a>. We will look at the contents of the individual files later in this post.</p>
 
 <p>The <code class="language-plaintext highlighter-rouge">scripts</code> directory contains our training scripts that will configure the required environment variables and submit the job to AI Platform Training.</p>
 
@@ -270,7 +270,7 @@ window.onload = wrap_img;
     <span class="n">blob</span><span class="p">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">model_name</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>The <code class="language-plaintext highlighter-rouge">model.py</code> file contains code for the transformer model RoBERTa. The <code class="language-plaintext highlighter-rouge">create</code> function initialises the model and the optimiser.</p>
+<p>The <code class="language-plaintext highlighter-rouge">model.py</code> file contains code for the transformer model RoBERTa. The <code class="language-plaintext highlighter-rouge">__init__</code> function initialises the module and defines the transformer model to use. The <code class="language-plaintext highlighter-rouge">forward</code> function will be called by PyTorch during execution of the code using the input batch of tokenised sentences together with the associated labels. The <code class="language-plaintext highlighter-rouge">create</code> function is used to initialises the model and the optimiser.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Specify the Transformer model
 </span><span class="k">class</span> <span class="nc">RoBERTaModel</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
