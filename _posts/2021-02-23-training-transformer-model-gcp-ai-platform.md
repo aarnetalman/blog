@@ -391,9 +391,9 @@ To monitor the training job you can stream the logs using gcloud:
 gcloud ai-platform jobs stream-logs ${JOB_NAME}
 ```
 Alternatively you can head to GCP console and navigate to AI Platform jobs and select *View logs*.
-![Logs](images/ai-platform-logs.png)
+![Logs](https://talman.io/images/ai-platform-logs.png)
 You can also view the GPU utilisation and memory from the AI Platform job page.
-![Monitoring GPU utilisation](images/ai-platform-metrics.png)
+![Monitoring GPU utilisation](https://talman.io/images/ai-platform-metrics.png)
 
 
 ## Conclusion
