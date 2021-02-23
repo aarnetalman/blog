@@ -150,6 +150,7 @@ def load_data(args):
 ```
 
 The `save_model` function will save the trained model once it's been trained and uploads it to Google Cloud Storage.
+
 ```python
 def save_model(args):
     """Saves the model to Google Cloud Storage
@@ -176,6 +177,7 @@ def save_model(args):
 ```
 
 The `model.py` file contains code for the transformer model RoBERTa. The `create` function initialises the model and the optimiser.  
+
 ```python
 # Specify the Transformer model
 class RoBERTaModel(nn.Module):
@@ -236,6 +238,7 @@ def train(args, model, dataloader, optimizer, device):
                     i+1, len(dataloader), # Batch
                     loss.item())) # Loss
 ```
+
 The `evaluate` function takes the development or test dataloader as an input and evaluates the prediction accuracy of our model. This will be called after each training epoch using the development dataloader and after the training has finished using the test dataloader.
 
 ```python
@@ -344,6 +347,7 @@ setup(
     description='Sequence Classification with Transformers on GCP AI Platform'
 )
 ```
+
 The `config.yaml` file contains information about the compute instance used for training the model. For this job we need use an NVIDIA V100 GPU as it provides improved training speed and larger GPU memory compared to the cheaper K80 GPUs. 
 
 ```yaml
@@ -357,7 +361,7 @@ trainingInput:
 ```
 Finally the `scripts` directory contains the `train-gcp.sh` script which includes the required environment variables as will as the gcloud command to submit the AI Platform Training job.
 
-```
+```bash
 # BUCKET_NAME: unique bucket name
 BUCKET_NAME=-name-of-your-gs-bucket
 
@@ -387,12 +391,12 @@ gcloud ai-platform jobs submit training ${JOB_NAME} \
     --epochs 2 \
     --batch_size 16 \
     --learning_rate 2e-5
-```
 
-To monitor the training job you can stream the logs using gcloud:
-```
 gcloud ai-platform jobs stream-logs ${JOB_NAME}
 ```
+
+The list line of this script streams the logs directly to your command line. 
+
 Alternatively you can head to GCP console and navigate to AI Platform jobs and select *View logs*.
 ![Logs](https://talman.io/images/ai-platform-logs.png)
 You can also view the GPU utilisation and memory from the AI Platform job page.
