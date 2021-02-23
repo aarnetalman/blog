@@ -446,12 +446,17 @@ window.onload = wrap_img;
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># BUCKET_NAME: unique bucket name
 BUCKET_NAME=-name-of-your-gs-bucket
+
 # The PyTorch image provided by AI Platform Training.
 IMAGE_URI=gcr.io/cloud-ml-public/training/pytorch-gpu.1-4
+
 # JOB_NAME: the name of your job running on AI Platform.
 JOB_NAME=transformers_job_$(date +%Y%m%d_%H%M%S)
+
 echo "Submitting AI Platform Training job: ${JOB_NAME}"
+
 PACKAGE_PATH=./trainer # this can be a GCS location to a zipped and uploaded package
+
 REGION=us-central1
 
 # JOB_DIR: Where to store prepared package and upload output model.
