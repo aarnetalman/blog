@@ -5,6 +5,8 @@ title:  "Training PyTorch Transformers on GCP AI Platform"
 
 Google Cloud Platform (GCP) is widely known for its great AI and machine learning capabilities and products. In fact, there are tons of material available on how you can train and deploy TensorFlow models on GCP. However, GCP is not just for people using TensorFlow but it has good support for other frameworks as well. In this post I will show how to use another highly popular ML framework PyTorch on AI Platform Training. I will show how to fine-tune a state-of-the-art sequence classification model using PyTorch and the [`transformers`](HuggingFace Transformers) library. We will be using a pre-trained [RoBERTa](https://huggingface.co/transformers/model_doc/roberta.html) as the transformer model for this task which we will fine-tune to perform sequence classification.
 
+RoBERTa falls under the family of transformer-based massive language models which have become very popular in natural language processing since the release of [BERT](https://github.com/google-research/bert) developed by Google. RoBERTa was developed by researchers at University of Washington and Facebook AI. It is fundamentally a BERT model pre-trained with an improved pre-training approach. See the details about RoBERTa [here](https://arxiv.org/abs/1907.11692).
+
 This post covers the following topics:
 * How to structure your ML project for AI Platform Training
 * Code for the model, the training routine and evaluation of the model
