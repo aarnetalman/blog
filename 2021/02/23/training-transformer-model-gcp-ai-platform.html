@@ -1,0 +1,399 @@
+<h1 id="training-pytorch-transformers-on-gcp-ai-platform">Training PyTorch Transformers on GCP AI Platform</h1>
+<blockquote>
+  <p>Demo on how to train a state-of-the-art sequence classification model on Google Cloud Platform</p>
+</blockquote>
+
+<ul>
+  <li>toc: false</li>
+  <li>comments: true</li>
+  <li>author: Aarne Talman</li>
+  <li>categories: [cloud, gcp, python, demo]</li>
+</ul>
+
+<p>Google Cloud Platform (GCP) is widely known for its great AI and machine learning capabilities and products. In fact there are tons of material available on how you can train and deploy TensorFlow models on GCP. However, GCP is not just for people using TensorFlow. It has good support for other frameworks as well. In this post I will show how to use another highly popular ML framework PyTorch on AI Platform Training. I will show how to fine-tune a state-of-the-art sequence classification model using PyTorch and the <a href="HuggingFace Transformers"><code class="language-plaintext highlighter-rouge">transformers</code></a> library. We will be using a pre-trained <a href="https://huggingface.co/transformers/model_doc/roberta.html">RoBERTa</a> as the transformer model for this task.</p>
+
+<p>This post covers the following topics:</p>
+<ul>
+  <li>How to structure your ML project for AI Platform Training</li>
+  <li>Code for the model, the training routine and evaluation of the model</li>
+  <li>How to launch and monitor your training job</li>
+</ul>
+
+<p>You can find all the code in this GitHub repo:</p>
+
+<h2 id="ml-project-structure">ML Project Structure</h2>
+
+<p>Let’s start with the contents of our ML project.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── trainer/
+│   ├── __init__.py
+│   ├── experiment.py
+│   ├── inputs.py
+│   ├── model.py
+│   └── task.py
+├── scripts/
+│   └── train-gcp.sh
+├── config.yaml
+└── setup.py
+</code></pre></div></div>
+<p>The <code class="language-plaintext highlighter-rouge">trainer</code> directory contains all the python files required to train the model. The contents of this directory will be packaged and submitted to AI platform. You can find more details and best practices on how to package your training application <a href="https://cloud.google.com/ai-platform/training/docs/packaging-trainer">here</a>. We will look at the contents of the individual files later in this post.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">scripts</code> directory contains our training scripts that will configure the required environment variables and submit the job to AI Platform Training.</p>
+
+<p><code class="language-plaintext highlighter-rouge">config.yaml</code> contains configuration of the compute instance used for training the model. Finally, <code class="language-plaintext highlighter-rouge">setup.py</code>contains details about our python package and the required dependencies. AI Platform Training will use the details in this file to install any missing dependencies before starting the training job.</p>
+
+<h2 id="pytorch-code-for-training-the-model">PyTorch Code for Training the Model</h2>
+
+<p>Let’s look at the contents of our python package. the first one, <code class="language-plaintext highlighter-rouge">__init__.py</code> is just an empty file. This needs to be in place and located in each subdirectory. The init files will be used by Python <a href="https://setuptools.readthedocs.io/en/latest/">Setuptools</a> to identify directories with code to package. It is OK to leave this file empty.</p>
+
+<p>The rest of the files contain different parts of our PyTorch software. <code class="language-plaintext highlighter-rouge">task.py</code> is our main file and will be called by AI Platform Training. It retrieves the command line arguments for our training task and passes those to the <code class="language-plaintext highlighter-rouge">run</code> function in <code class="language-plaintext highlighter-rouge">experiment.py</code>. The contents of <code class="language-plaintext highlighter-rouge">task.py</code> are below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_args</span><span class="p">():</span>
+    <span class="s">"""Define the task arguments with the default values.
+
+    Returns:
+        experiment parameters
+    """</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">'NLI with Transformers'</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--batch_size'</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--epochs'</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--log_every'</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--learning_rate'</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mf">0.00005</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--fraction_of_train_data'</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">1</span>
+                        <span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--seed'</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">1234</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--weight-decay'</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--job-dir'</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">'GCS location to export models'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">'--model-name'</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">'The name of your saved model'</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="s">'model.pth'</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parser</span><span class="p">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="s">"""Setup / Start the experiment
+    """</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">()</span>
+    <span class="n">experiment</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<p>Before we look at the main training and evaluation routines, let’s look at the <code class="language-plaintext highlighter-rouge">inputs.py</code> and <code class="language-plaintext highlighter-rouge">model.py</code> which define the datasets for the task and the transformer model respectively. First, the we use the <a href="https://huggingface.co/docs/datasets/"><code class="language-plaintext highlighter-rouge">datasets</code></a> library to retrieve our data for the experiment. We use the MultiNLI sequence classification dataset for this experiment. The <code class="language-plaintext highlighter-rouge">inputs.py</code> file contains code to retrieve, split and pre-process the data. The <code class="language-plaintext highlighter-rouge">NLIDataset</code> provides the PyTorch <code class="language-plaintext highlighter-rouge">Dataset</code> object for the training, development and test data for our task.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">NLIDataset</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">utils</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encodings</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">encodings</span> <span class="o">=</span> <span class="n">encodings</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">encodings</span><span class="p">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">item</span><span class="p">[</span><span class="s">'labels'</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">item</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#return len(self.labels)
+</span>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">encodings</span><span class="p">.</span><span class="n">input_ids</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">load_data</code> function retrieves the data using the <code class="language-plaintext highlighter-rouge">datasets</code> library, splits the data into training, development and test sets, and then tokenises the input using <code class="language-plaintext highlighter-rouge">RobertaTokenizer</code> and creates PyTorch <code class="language-plaintext highlighter-rouge">DataLoader</code> objects for the different sets.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">RobertaTokenizer</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'roberta-base'</span><span class="p">)</span>
+    <span class="n">nli_data</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s">'multi_nli'</span><span class="p">)</span>
+
+    <span class="c1"># For testing purposes get a slammer slice of the training data
+</span>    <span class="n">all_examples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nli_data</span><span class="p">[</span><span class="s">'train'</span><span class="p">][</span><span class="s">'label'</span><span class="p">])</span>
+    <span class="n">num_examples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">all_examples</span> <span class="o">*</span> <span class="n">args</span><span class="p">.</span><span class="n">fraction_of_train_data</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"Training with {}/{} examples."</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">num_examples</span><span class="p">,</span> <span class="n">all_examples</span><span class="p">))</span>
+    
+    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">nli_data</span><span class="p">[</span><span class="s">'train'</span><span class="p">][:</span><span class="n">num_examples</span><span class="p">]</span>
+
+    <span class="n">dev_dataset</span> <span class="o">=</span> <span class="n">nli_data</span><span class="p">[</span><span class="s">'validation_matched'</span><span class="p">]</span>
+    <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">nli_data</span><span class="p">[</span><span class="s">'validation_matched'</span><span class="p">]</span>
+
+    <span class="n">train_labels</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="p">[</span><span class="s">'label'</span><span class="p">]</span>
+
+    <span class="n">val_labels</span> <span class="o">=</span> <span class="n">dev_dataset</span><span class="p">[</span><span class="s">'label'</span><span class="p">]</span>
+    <span class="n">test_labels</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="p">[</span><span class="s">'label'</span><span class="p">]</span>
+
+    <span class="n">train_encodings</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">[</span><span class="s">'premise'</span><span class="p">],</span> <span class="n">train_dataset</span><span class="p">[</span><span class="s">'hypothesis'</span><span class="p">],</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">val_encodings</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">dev_dataset</span><span class="p">[</span><span class="s">'premise'</span><span class="p">],</span> <span class="n">dev_dataset</span><span class="p">[</span><span class="s">'hypothesis'</span><span class="p">],</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">test_encodings</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">[</span><span class="s">'premise'</span><span class="p">],</span> <span class="n">test_dataset</span><span class="p">[</span><span class="s">'hypothesis'</span><span class="p">],</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">NLIDataset</span><span class="p">(</span><span class="n">train_encodings</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">)</span>
+    <span class="n">val_dataset</span> <span class="o">=</span> <span class="n">NLIDataset</span><span class="p">(</span><span class="n">val_encodings</span><span class="p">,</span> <span class="n">val_labels</span><span class="p">)</span>
+    <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">NLIDataset</span><span class="p">(</span><span class="n">test_encodings</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">)</span>
+
+    <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">dev_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">dev_loader</span><span class="p">,</span> <span class="n">test_loader</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">save_model</code> function will save the trained model once it’s been trained and uploads it to Google Cloud Storage.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="s">"""Saves the model to Google Cloud Storage
+
+    Args:
+      args: contains name for saved model.
+    """</span>
+    <span class="n">scheme</span> <span class="o">=</span> <span class="s">'gs://'</span>
+    <span class="n">bucket_name</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">job_dir</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">scheme</span><span class="p">):].</span><span class="n">split</span><span class="p">(</span><span class="s">'/'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s">'{}{}/'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">scheme</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">)</span>
+    <span class="n">bucket_path</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">job_dir</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):].</span><span class="n">rstrip</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+
+    <span class="n">datetime_</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">().</span><span class="n">strftime</span><span class="p">(</span><span class="s">'model_%Y%m%d_%H%M%S'</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">bucket_path</span><span class="p">:</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="s">'{}/{}/{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">bucket_path</span><span class="p">,</span> <span class="n">datetime_</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">model_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="s">'{}/{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">datetime_</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">model_name</span><span class="p">)</span>
+
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="p">.</span><span class="n">Client</span><span class="p">().</span><span class="n">bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+    <span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="p">.</span><span class="n">blob</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+    <span class="n">blob</span><span class="p">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">model_name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">model.py</code> file contains code for the transformer model RoBERTa. The <code class="language-plaintext highlighter-rouge">create</code> function initialises the model and the optimiser.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Specify the Transformer model
+</span><span class="k">class</span> <span class="nc">RoBERTaModel</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Defines the transformer model to be used.
+        """</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RoBERTaModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">RobertaForSequenceClassification</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">'roberta-base'</span><span class="p">,</span> <span class="n">num_labels</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="s">"""
+    Create the model
+
+    Args:
+      args: experiment parameters.
+      device: device.
+    """</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">RoBERTaModel</span><span class="p">().</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="p">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">parameters</span><span class="p">(),</span>
+                           <span class="n">lr</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">learning_rate</span><span class="p">,</span>
+                           <span class="n">weight_decay</span><span class="o">=</span><span class="n">args</span><span class="p">.</span><span class="n">weight_decay</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">experiment.py</code> file contains the main training and evaluation routines for our task. It contains the functions <code class="language-plaintext highlighter-rouge">train</code>, <code class="language-plaintext highlighter-rouge">evaluate</code> and <code class="language-plaintext highlighter-rouge">run</code>. The <code class="language-plaintext highlighter-rouge">train</code> function takes our training dataloader as an input and trains the model for one epoch in batches of the size defined in the command line arguments.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="s">"""Create the training loop for one epoch.
+
+    Args:
+      model: The transformer model that you are training, based on
+      nn.Module
+      dataloader: The training dataset
+      optimizer: The selected optmizer to update parameters and gradients
+      device: device
+    """</span>
+    <span class="n">model</span><span class="p">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+            <span class="n">optimizer</span><span class="p">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'input_ids'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'attention_mask'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'labels'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">loss</span><span class="p">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">%</span> <span class="n">args</span><span class="p">.</span><span class="n">log_every</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"Progress: {:3.0f}% - Batch: {:&gt;4.0f}/{:&lt;4.0f} - Loss: {:&lt;.4f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span>
+                    <span class="mf">100.</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">i</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">),</span> <span class="c1"># Progress
+</span>                    <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataloader</span><span class="p">),</span> <span class="c1"># Batch
+</span>                    <span class="n">loss</span><span class="p">.</span><span class="n">item</span><span class="p">()))</span> <span class="c1"># Loss
+</span></code></pre></div></div>
+<p>The <code class="language-plaintext highlighter-rouge">evaluate</code> function takes the development or test dataloader as an input and evaluates the prediction accuracy of our model. This will be called after each training epoch using the development dataloader and after the training has finished using the test dataloader.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+      <span class="s">"""Create the evaluation loop.
+
+    Args:
+      model: The transformer model that you are training, based on
+      nn.Module
+      dataloader: The development or testing dataset
+      device: device
+    """</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Starting evaluation..."</span><span class="p">)</span>
+    <span class="n">model</span><span class="p">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">eval_preds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">eval_labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'input_ids'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">attention_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'attention_mask'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s">'labels'</span><span class="p">].</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+            <span class="n">preds</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">eval_preds</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">preds</span><span class="p">.</span><span class="n">cpu</span><span class="p">().</span><span class="n">numpy</span><span class="p">())</span>
+            <span class="n">eval_labels</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="s">'labels'</span><span class="p">].</span><span class="n">cpu</span><span class="p">().</span><span class="n">numpy</span><span class="p">())</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"Done evaluation"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">eval_labels</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">eval_preds</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Finally, the <code class="language-plaintext highlighter-rouge">run</code> function calls the <code class="language-plaintext highlighter-rouge">run</code> and <code class="language-plaintext highlighter-rouge">evaluate</code> functions and saves the fine-tuned model to Google Cloud Storage once training has completed.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="s">"""Load the data, train, evaluate, and export the model for serving and
+     evaluating.
+
+    Args:
+      args: experiment parameters.
+    """</span>
+    <span class="n">cuda_availability</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">is_available</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">cuda_availability</span><span class="p">:</span>
+      <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">device</span><span class="p">(</span><span class="s">'cuda:{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">current_device</span><span class="p">()))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">device</span> <span class="o">=</span> <span class="s">'cpu'</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">*************************'</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'`cuda` available: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cuda_availability</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'Current Device: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'*************************</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+
+    <span class="n">torch</span><span class="p">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="c1"># Open our dataset
+</span>    <span class="n">train_loader</span><span class="p">,</span> <span class="n">eval_loader</span><span class="p">,</span> <span class="n">test_loader</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1"># Create the model, loss function, and optimizer
+</span>    <span class="n">bert_model</span><span class="p">,</span> <span class="n">optimizer</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+
+    <span class="c1"># Train / Test the model
+</span>    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">train</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">bert_model</span><span class="p">,</span> <span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+        <span class="n">dev_labels</span><span class="p">,</span> <span class="n">dev_preds</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">bert_model</span><span class="p">,</span> <span class="n">eval_loader</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+        <span class="c1"># Print validation accuracy
+</span>        <span class="n">dev_accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">dev_labels</span> <span class="o">==</span> <span class="n">dev_preds</span><span class="p">).</span><span class="n">mean</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Dev accuracy after epoch {}: {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">dev_accuracy</span><span class="p">))</span>
+
+    <span class="c1"># Evaluate the model
+</span>    <span class="k">print</span><span class="p">(</span><span class="s">"Evaluate the model using the testing dataset"</span><span class="p">)</span>
+    <span class="n">test_labels</span><span class="p">,</span> <span class="n">test_preds</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">bert_model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    <span class="c1"># Print validation accuracy
+</span>    <span class="n">test_accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">test_labels</span> <span class="o">==</span> <span class="n">test_preds</span><span class="p">).</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">Test accuracy after epoch {}: {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">test_accuracy</span><span class="p">))</span>
+
+    <span class="c1"># Export the trained model
+</span>    <span class="n">torch</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="n">bert_model</span><span class="p">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">args</span><span class="p">.</span><span class="n">model_name</span><span class="p">)</span>
+
+    <span class="c1"># Save the model to GCS
+</span>    <span class="k">if</span> <span class="n">args</span><span class="p">.</span><span class="n">job_dir</span><span class="p">:</span>
+        <span class="n">inputs</span><span class="p">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="launching-and-monitoring-the-training-job">Launching and monitoring the training job</h2>
+
+<p>Once we have the python code for our training job, we need to prepare it for AI Platform Training. There are three important files required for this. First, <code class="language-plaintext highlighter-rouge">setup.py</code> contains information about the dependencies of our python package as well as metadata like name and version of the package.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">find_packages</span>
+<span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">REQUIRED_PACKAGES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">'google-cloud-storage&gt;=1.14.0'</span><span class="p">,</span>
+    <span class="s">'transformers'</span><span class="p">,</span>
+    <span class="s">'datasets'</span><span class="p">,</span>
+    <span class="s">'numpy==1.18.5'</span><span class="p">,</span>
+    <span class="s">'argparse'</span><span class="p">,</span>
+    <span class="s">'tqdm==4.49.0'</span>
+<span class="p">]</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">'trainer'</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s">'0.1'</span><span class="p">,</span>
+    <span class="n">install_requires</span><span class="o">=</span><span class="n">REQUIRED_PACKAGES</span><span class="p">,</span>
+    <span class="n">packages</span><span class="o">=</span><span class="n">find_packages</span><span class="p">(),</span>
+    <span class="n">include_package_data</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s">'Sequence Classification with Transformers on GCP AI Platform'</span>
+<span class="p">)</span>
+</code></pre></div></div>
+<p>The <code class="language-plaintext highlighter-rouge">config.yaml</code> file contains information about the compute instance used for training the model. For this job we need use an NVIDIA V100 GPU as it provides improved training speed and larger GPU memory compared to the cheaper K80 GPUs.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">trainingInput</span><span class="pi">:</span>
+  <span class="na">scaleTier</span><span class="pi">:</span> <span class="s">CUSTOM</span>
+  <span class="na">masterType</span><span class="pi">:</span> <span class="s">n1-standard-8</span>
+  <span class="na">masterConfig</span><span class="pi">:</span>
+    <span class="na">acceleratorConfig</span><span class="pi">:</span>
+      <span class="na">count</span><span class="pi">:</span> <span class="m">1</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s">NVIDIA_TESLA_V100</span>
+</code></pre></div></div>
+<p>Finally the <code class="language-plaintext highlighter-rouge">scripts</code> directory contains the <code class="language-plaintext highlighter-rouge">train-gcp.sh</code> script which includes the required environment variables as will as the gcloud command to submit the AI Platform Training job.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># BUCKET_NAME: unique bucket name
+BUCKET_NAME=-name-of-your-gs-bucket
+# The PyTorch image provided by AI Platform Training.
+IMAGE_URI=gcr.io/cloud-ml-public/training/pytorch-gpu.1-4
+# JOB_NAME: the name of your job running on AI Platform.
+JOB_NAME=transformers_job_$(date +%Y%m%d_%H%M%S)
+echo "Submitting AI Platform Training job: ${JOB_NAME}"
+PACKAGE_PATH=./trainer # this can be a GCS location to a zipped and uploaded package
+REGION=us-central1
+
+# JOB_DIR: Where to store prepared package and upload output model.
+JOB_DIR=gs://${BUCKET_NAME}/${JOB_NAME}/models
+
+gcloud ai-platform jobs submit training ${JOB_NAME} \
+    --region ${REGION} \
+    --master-image-uri ${IMAGE_URI} \
+    --config config.yaml \
+    --job-dir ${JOB_DIR} \
+    --module-name trainer.task \
+    --package-path ${PACKAGE_PATH} \
+    -- \
+    --epochs 2 \
+    --batch_size 16 \
+    --learning_rate 2e-5
+</code></pre></div></div>
+
+<p>To monitor the training job you can stream the logs using gcloud:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud ai-platform jobs stream-logs ${JOB_NAME}
+</code></pre></div></div>
+<p>Alternatively you can head to GCP console and navigate to AI Platform jobs and select <em>View logs</em>.
+<img src="../images/ai-platform-logs.png" alt="Logs" />
+You can also view the GPU utilisation and memory from the AI Platform job page.
+<img src="../images/ai-platform-metrics.png" alt="Monitoring GPU utilisation" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That concludes this post. You can find all the code on <a href="https://github.com/aarnetalman/transformers-sequence-classification-gcp">Github</a>.</p>
+
+<p>Hope you enjoyed this demo. Feel free to contact me if you have any questions.</p>
+<ul>
+  <li>Twitter: <a href="https://twitter.com/aarnetalman">@AarneTalman</a></li>
+  <li>Website: <a href="https://talman.io">talman.io</a></li>
+</ul>
