@@ -8,7 +8,7 @@ See my full [CV](../assets/files/cv_aarne_talman.pdf) or find me on [LinkedIn](h
 
 ### Employment
 
-*   **2021 - present**, Global AI/ML Practice Lead, [Nordcloud](https://nordcloud.com "Nordcloud")
+*   **2021 - present**, Global AI/ML Practice Lead, [Nordcloud, an IBM Company](https://nordcloud.com "Nordcloud, an IBM Company")
 *   **2020 - 2021**, CTO, [Nordcloud UK](https://nordcloud.com "Nordcloud UK")
 *   **2018 - 2020**, Doctoral Researcher, [Language Technology,](https://blogs.helsinki.fi/language-technology/ "University of Helsinki") University of Helsinki  
     Working on computational semantics and natural language processing.
