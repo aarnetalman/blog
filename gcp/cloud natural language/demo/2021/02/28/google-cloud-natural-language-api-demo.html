@@ -146,17 +146,18 @@ window.onload = wrap_img;
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In my <a href="https://talman.io/2021/02/25/training-transformer-model-gcp-ai-platform.html">previous blog post</a> I showed how to use AI Platform Training to fine-tune a custom NLP model using PyTorch and the <code>transformers</code> library. In this post we take advantage of Google's pre-trained AI models for NLP and use <a href="https://cloud.google.com/natural-language/docs">Cloud Natural Language API</a> to analyse text. Google's pre-trained machine learning APIs are great for building working AI prototypes and proof of concepts in matter of hours.</p>
 <p>Google's Cloud Natural Language API allows you to do named entity recognition, sentiment analysis, content classification and syntax analysis using a simple REST API. The API supports Python, Go, Java, Node.js, Ruby, PHP and C#. In this post we'll be using the Python API.</p>
-<p>Before we jump in, let's define our use case. To highlight the simplicity and power of the API I'm going to use it to analyse the content of news articles. In particular I want to find out if the latest articles published in The Guardian's world news section contain mentions of "famous people" and if those mentions are have a positive or a negative sentiment. I also want to find out the overall sentiment of the news articles. To do this, we will go through a number of steps. We will</p>
+<p>Before we jump in, let's define our use case. To highlight the simplicity and power of the API I'm going to use it to analyse the content of news articles. In particular I want to find out if the latest articles published in The Guardian's world news section contain mentions of famous people and if those mentions have a positive or a negative sentiment. I also want to find out the overall sentiment of the news articles. To do this, we will go through a number of steps.</p>
 <ol>
-<li>Use the Guardian's RSS feed to extract links to the latest news articles in the world news section.</li>
-<li>Download the HTML content of the articles published in the past 24 hours and extract the article text in plain text.</li>
-<li>Analyse the overall sentiment of the text using Cloud Natural Language.</li>
-<li>Extract named entities from the text using Cloud Natural Language.</li>
-<li>Go through all named entities of type <code>PERSON</code> and see if they have a Wikipedia entry (for the purposes of this post, this will be our measure of the person being "famous").</li>
+<li>We will use the Guardian's RSS feed to extract links to the latest news articles in the world news section.</li>
+<li>We will download the HTML content of the articles published in the past 24 hours and extract the article text in plain text.</li>
+<li>We will analyse the overall sentiment of the text using Cloud Natural Language.</li>
+<li>We will extract named entities from the text using Cloud Natural Language.</li>
+<li>We will go through all named entities of type <code>PERSON</code> and see if they have a Wikipedia entry (for the purposes of this post, this will be our measure of the person being "famous").</li>
 <li>Once we've identified all the mentions of "famous people", we analyse the sentiment of the sentences mentioning them.</li>
 <li>Finally, we will print the names, Wikipedia links and the sentiments of the mentions of all the "famous people" in each article, together with the article title, url and the overall sentiment of the article.</li>
 </ol>
-<p>We will do all this using GCP AI Platform Notebooks. To launch new notebook make sure you have an active project selected. Navigate to AI Platform Notebooks and select <strong>New Instance</strong>. For this demo you don't need a very powerful notebook instance, so we will make some changes to the defaults to save cost. First, select <strong>Python 3</strong> (without CUDA) from the list and give a name for your notebook. Next, click the edit icon next to <strong>Instance properties</strong>. From Instance properties select n1-standard-1 as the intance type. You'll see that the estimated cost of running this instance is only $0.041.</p>
+<p>We will do all this using GCP AI Platform Notebooks.</p>
+<p>To launch new notebook make sure you are logged in to Google Cloud Console and have an active project selected. Navigate to AI Platform Notebooks and select <strong>New Instance</strong>. For this demo you don't need a very powerful notebook instance, so we will make some changes to the defaults to save cost. First, select <strong>Python 3</strong> (without CUDA) from the list and give a name for your notebook. Next, click the edit icon next to <strong>Instance properties</strong>. From Instance properties select n1-standard-1 as the Machine type. You'll see that the estimated cost of running this instance is only $0.041 per hour.</p>
 <p><img src="https://talman.io/images/instance-type.png" alt="Instance type" /></p>
 
 </div>
@@ -243,7 +244,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We will then define two functons we will use to extract the main article text from the HTML document. The <code>text_from_html</code> function will parse the HTML file, extract the text from that file and use the <code>tag_visible</code> function to filter out all but the main article text.</p>
+<p>We will then define two functions we will use to extract the main article text from the HTML document. The <code>text_from_html</code> function will parse the HTML file, extract the text from that file and use the <code>tag_visible</code> function to filter out all but the main article text.</p>
 
 </div>
 </div>
@@ -353,7 +354,7 @@ window.onload = wrap_img;
   <span class="nt">&quot;language&quot;</span><span class="p">:</span> <span class="err">string</span>
 <span class="p">}</span>
 </pre></div>
-<p>We will then call the API to analyse the sentiment of the document as well as to get the sentimens of each sentence in the document. The response has the following form:</p>
+<p>We will then call the API to analyse the sentiment of the document as well as to get the sentiments of each sentence in the document. The response has the following form:</p>
 <div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;documentSentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="err">object(Sentiment)</span>
@@ -367,8 +368,8 @@ window.onload = wrap_img;
 <span class="p">}</span>
 </pre></div>
 <p>The overall document sentiment is stored in <code>annotations.document_sentiment.score</code>. We assign the document an overall sentiment POSITIVE if the score is above 0, NEGATIVE if it is less than 0 and NEUTRAL if it is 0.</p>
-<p>We then go through all the entities identified by the API and create a list of those entities that have the type PERSON. Once we have this list, we loop through it and check which ones from the list have <code>wikipedia_url</code> in their <code>metadata_name</code>. As said, we use this as our measure of the person being "famous". When we identify a "famoud person" we print the person's name and the link to the Wikipedia entry.</p>
-<p>We then check the sentiment annotated sentences for occurence of the identified "famous people" and use the same values as above to determine the sentiment category of those sentences. Finally, we print all the sentiments of all the sentences mentioning the person.</p>
+<p>We then go through all the entities identified by the API and create a list of those entities that have the type PERSON. Once we have this list, we loop through it and check which ones from the list have <code>wikipedia_url</code> in their <code>metadata_name</code>. As said, we use this as our measure of the person being "famous". When we identify a "famous person" we print the person's name and the link to the Wikipedia entry.</p>
+<p>We then check the sentiment annotated sentences for occurrence of the identified "famous people" and use the same values as above to determine the sentiment category of those sentences. Finally, we print all the sentiments of all the sentences mentioning the person.</p>
 
 </div>
 </div>
@@ -427,7 +428,7 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Now that we have extracted the text from the news site and defined the fucntion to analyse the contents of each article, all we need to do is go through the articles and call the function. The input for the fucntion is a dictionary containing the plain text contents of the article, the type of the document (which in our case if PLAIN_TEXT) and the language of the document (which for us is English). We also print the name of each article and the link to the article.</p>
+<p>Now that we have extracted the text from the news site and defined the function to analyse the contents of each article, all we need to do is go through the articles and call the function. The input for the function is a dictionary containing the plain text contents of the article, the type of the document (which in our case if <code>PLAIN_TEXT</code>) and the language of the document (which for us is English). We also print the name of each article and the link to the article.</p>
 <p>For demo purposes we limit our analysis to the first 3 articles.</p>
 
 </div>
