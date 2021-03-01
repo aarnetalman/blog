@@ -165,28 +165,25 @@ window.onload = wrap_img;
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Steps-1-2:-Extract-the-Latest-News-Articles">Steps 1-2: Extract the Latest News Articles<a class="anchor-link" href="#Steps-1-2:-Extract-the-Latest-News-Articles"> </a></h2><p>We start start by downloading some required Python libraries. The following line uses pip to install lxml, Beautiful Soup and feedparser using pip. We use lxml and Beautiful Soup for processing and parsing HTML the content. Feedparser will be used to parse the RSS feed to identify the latest news articles and to get the links to the full text of those articles.</p>
+<p>Once you have created the instance and it is running, click the Open JupyterLab link of your notebook instance. Once you're in JupyterLab, select new Python 3 notebook.</p>
 
 </div>
 </div>
 </div>
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip install lxml bs4 feedparser
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Steps-1-2:-Extract-the-Latest-News-Articles">Steps 1-2: Extract the Latest News Articles<a class="anchor-link" href="#Steps-1-2:-Extract-the-Latest-News-Articles"> </a></h2><p>We start start by downloading some required Python libraries. The following command uses pip to install lxml, Beautiful Soup and Feedparser. We use lxml and Beautiful Soup for processing and parsing HTML the content. Feedparser will be used to parse the RSS feed to identify the latest news articles and to get the links to the full text of those articles.</p>
 
 </div>
-    
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>!pip install lxml bs4 feedparser</p>
 
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Once we have installed the required libraries we need to import them together with the other libraries we need for extracting the news article content.</p>
