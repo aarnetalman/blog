@@ -144,6 +144,7 @@ window.onload = wrap_img;
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><em>This is a slightly modified version of an article originally posted on <a href="https://medium.com/nordcloud-engineering/analysing-news-article-content-with-google-cloud-natural-language-api-69f927aae85f">Nordcloud Engineering blog</a>.</em></p>
 <p>In my <a href="https://talman.io/2021/02/25/training-transformer-model-gcp-ai-platform.html">previous blog post</a> I showed how to use AI Platform Training to fine-tune a custom NLP model using PyTorch and the <code>transformers</code> library. In this post we take advantage of Google's pre-trained AI models for NLP and use <a href="https://cloud.google.com/natural-language/docs">Cloud Natural Language API</a> to analyse text. Google's pre-trained machine learning APIs are great for building working AI prototypes and proof of concepts in matter of hours.</p>
 <p>Google's Cloud Natural Language API allows you to do named entity recognition, sentiment analysis, content classification and syntax analysis using a simple REST API. The API supports Python, Go, Java, Node.js, Ruby, PHP and C#. In this post we'll be using the Python API.</p>
 <p><img src="https://talman.io/images/paper.jpg" alt="Newspapers" /></p>
@@ -158,7 +159,7 @@ window.onload = wrap_img;
 <li>Finally, we will print the names, Wikipedia links and the sentiments of the mentions of all the "famous people" in each article, together with the article title, url and the overall sentiment of the article.</li>
 </ol>
 <p>We will do all this using GCP AI Platform Notebooks.</p>
-<p>To launch new notebook make sure you are logged in to Google Cloud Console and have an active project selected. Navigate to AI Platform Notebooks and select <strong>New Instance</strong>. For this demo you don't need a very powerful notebook instance, so we will make some changes to the defaults to save cost. First, select <strong>Python 3</strong> (without CUDA) from the list and give a name for your notebook. Next, click the edit icon next to <strong>Instance properties</strong>. From Instance properties select n1-standard-1 as the Machine type. You'll see that the estimated cost of running this instance is only $0.041 per hour.</p>
+<p>To launch a new notebook make sure you are logged in to Google Cloud Console and have an active project selected. Navigate to AI Platform Notebooks and select <strong>New Instance</strong>. For this demo you don't need a very powerful notebook instance, so we will make some changes to the defaults to save cost. First, select <strong>Python 3</strong> (without CUDA) from the list and give a name for your notebook. Next, click the edit icon next to <strong>Instance properties</strong>. From Instance properties select n1-standard-1 as the Machine type. You'll see that the estimated cost of running this instance is only $0.041 per hour.</p>
 <p><img src="https://talman.io/images/instance-type.png" alt="Instance type" /></p>
 
 </div>
