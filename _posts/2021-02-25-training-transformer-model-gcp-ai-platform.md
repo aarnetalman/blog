@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  "Training PyTorch Transformers on GCP AI Platform"
+title:  "Training PyTorch Transformers on Google Cloud AI Platform"
 ---
 
 *This is a slightly modified version of an article originally posted on [Nordcloud Engineering blog](https://medium.com/nordcloud-engineering/training-pytorch-transformers-on-gcp-ai-platform-e10ecb8a9e11).*
 
-Google Cloud Platform (GCP) is widely known for its great AI and machine learning capabilities and products. In fact, there are tons of material available on how you can train and deploy TensorFlow models on GCP. However, GCP is not just for people using TensorFlow but it has good support for other frameworks as well. In this post I will show how to use another highly popular ML framework PyTorch on [AI Platform Training](https://cloud.google.com/ai-platform/training/docs/overview). I will show how to fine-tune a state-of-the-art sequence classification model using PyTorch and the [`transformers`](https://huggingface.co/transformers/) library. We will be using a pre-trained [RoBERTa](https://huggingface.co/transformers/model_doc/roberta.html) as the transformer model for this task which we will fine-tune to perform sequence classification.
+Google Cloud is widely known for its great AI and machine learning capabilities and products. In fact, there are tons of material available on how you can train and deploy TensorFlow models on Google Cloud. However, Google Cloud is not just for people using TensorFlow but it has good support for other frameworks as well. In this post I will show how to use another highly popular ML framework PyTorch on [AI Platform Training](https://cloud.google.com/ai-platform/training/docs/overview). I will show how to fine-tune a state-of-the-art sequence classification model using PyTorch and the [`transformers`](https://huggingface.co/transformers/) library. We will be using a pre-trained [RoBERTa](https://huggingface.co/transformers/model_doc/roberta.html) as the transformer model for this task which we will fine-tune to perform sequence classification.
 
 RoBERTa falls under the family of transformer-based massive language models which have become very popular in natural language processing since the release of [BERT](https://github.com/google-research/bert) developed by Google. RoBERTa was developed by researchers at University of Washington and Facebook AI. It is fundamentally a BERT model pre-trained with an improved pre-training approach. See the details about RoBERTa [here](https://arxiv.org/abs/1907.11692).
 
@@ -399,7 +399,7 @@ gcloud ai-platform jobs submit training ${JOB_NAME} \
 gcloud ai-platform jobs stream-logs ${JOB_NAME}
 ```
 
-The list line of this script streams the logs directly to your command line. Alternatively you can head to GCP console and navigate to AI Platform jobs and select *View logs*.
+The list line of this script streams the logs directly to your command line. Alternatively you can head to Google Cloud console and navigate to AI Platform jobs and select *View logs*.
 
 ![Logs](https://talman.io/images/ai-platform-logs.png)
 
