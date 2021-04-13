@@ -1,0 +1,6 @@
+@inproceedings{talman_etal_2021_nli, 
+  author={Talman, Aarne and Apidianaki, Marianna, Chatzikyriakidis, Stergios and Tiedemann, J\"org}, 
+  title={{NLI} Data Sanity Check: Assessing the Effect of Data Corruption on Model Performance}, 
+  booktitle = {Proceedings of NoDaLiDa},
+  year = {2021}
+  }
