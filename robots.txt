@@ -1,1 +1,1 @@
-Sitemap: https://talman.io/sitemap.xml
+Sitemap: https://talman.fi/sitemap.xml
