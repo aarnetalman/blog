@@ -401,11 +401,11 @@ gcloud ai-platform jobs stream-logs ${JOB_NAME}
 
 The list line of this script streams the logs directly to your command line. Alternatively you can head to Google Cloud console and navigate to AI Platform jobs and select *View logs*.
 
-![Logs](https://talman.io/images/ai-platform-logs.png)
+![Logs](https://talman.fi/images/ai-platform-logs.png)
 
 You can also view the GPU utilisation and memory from the AI Platform job page.
 
-![Monitoring GPU utilisation](https://talman.io/images/ai-platform-metrics.png)
+![Monitoring GPU utilisation](https://talman.fi/images/ai-platform-metrics.png)
 
 
 ## Conclusion
@@ -414,4 +414,4 @@ That concludes this post. You can find all the code on [Github](https://github.c
 
 Hope you enjoyed this demo. Feel free to contact me if you have any questions.  
 *   Twitter: [@AarneTalman](https://twitter.com/aarnetalman)
-*   Website: [talman.io](https://talman.io)
+*   Website: [talman.fi](https://talman.fi)
