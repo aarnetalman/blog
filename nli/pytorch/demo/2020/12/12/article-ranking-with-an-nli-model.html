@@ -145,7 +145,7 @@ window.onload = wrap_img;
         
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In my <a href="https://talman.io/nli/pytorch/demo/2020/12/11/natural-language-inference-with-pytorch-and-transformers.html">previous post</a> I showed how to fine-tune a pre-trained transformers model for the natural language inference (NLI) classification task. In this post I'm taking a fine-tuned NLI model and use it to classify and rank articles in a news feed.</p>
+<p>In my <a href="https://talman.fi/nli/pytorch/demo/2020/12/11/natural-language-inference-with-pytorch-and-transformers.html">previous post</a> I showed how to fine-tune a pre-trained transformers model for the natural language inference (NLI) classification task. In this post I'm taking a fine-tuned NLI model and use it to classify and rank articles in a news feed.</p>
 <p>The idea is simple: we use an NLI model that has been trained on the MultiNLI task and pass an excerpt of the source text together with a search term we are interested in to the model. The model will then check if the source text entails the search term and returns a score. We can use these scores to rank the articles. We could use the model we trained on the previous demo, but luckily the people at Huggingface have made our lives much easier by releasing a new <a href="https://huggingface.co/transformers/master/main_classes/pipelines.html#transformers.ZeroShotClassificationPipeline">pipeline for zero-shot classification</a> which uses a pre-trained NLI model.</p>
 
 </div>
@@ -522,7 +522,7 @@ window.onload = wrap_img;
 <p>Hope you enjoyed this demo. Feel free to contact me if you have any questions.</p>
 <ul>
 <li>Twitter: <a href="https://twitter.com/aarnetalman">@AarneTalman</a></li>
-<li>Website: <a href="https://talman.io">talman.io</a></li>
+<li>Website: <a href="https://talman.fi">talman.fi</a></li>
 </ul>
 
 </div>
