@@ -9,11 +9,11 @@ See my full [CV](../assets/files/cv_aarne_talman.pdf) or find me on [LinkedIn](h
 ### Employment
 
 *   **2021 - present**, Senior AI Engineer, [Silo AI](https://silo.ai "Silo AI")
-*   **2020 - 2021**, Global AI/ML Practice Lead and UK CTO, [Nordcloud](https://nordcloud.com "Nordcloud UK")
-*   **2018 - 2020**, Doctoral Researcher, [Language Technology,](https://blogs.helsinki.fi/language-technology/ "University of Helsinki") University of Helsinki  
-    Working on computational semantics and natural language processing.
 *   **2019 - present**, Founder, [Basement AI](https://basement.ai "Basement AI")  
     Basement AI is a Nordic artificial intelligence research lab specializing in natural language processing and machine learning.
+*   **2018 - 2020**, Doctoral Researcher, [Language Technology,](https://blogs.helsinki.fi/language-technology/ "University of Helsinki") University of Helsinki  
+    Working on computational semantics and natural language processing.
+*   **2020 - 2021**, Global AI/ML Practice Lead and UK CTO, [Nordcloud](https://nordcloud.com "Nordcloud UK")
 *   **2015 - 2018**, Associate Director, Consulting, [Gartner](http://www.gartner.com "Gartner").
 *   **2012 - 2015**, Consultant, [Accenture](http://www.accenture.com/strategy/ "Accenture").
 *   **2011 - 2012**, Research Student, [London School of Economics](http://www.lse.ac.uk/philosophy "LSE").
